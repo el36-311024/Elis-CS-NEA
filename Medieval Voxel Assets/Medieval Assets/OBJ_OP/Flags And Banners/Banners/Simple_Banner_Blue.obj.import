@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://63xsd1f5t4ff"
+path="res://.godot/imported/Simple_Banner_Blue.obj-158a9b61e77e32a9db40da66c4535032.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Simple_Banner_Blue.obj-158a9b61e77e32a9db40da66c4535032.mesh"]
+
+source_file="res://Medieval Voxel Assets/Medieval Assets/OBJ_OP/Flags And Banners/Banners/Simple_Banner_Blue.obj"
+dest_files=["res://.godot/imported/Simple_Banner_Blue.obj-158a9b61e77e32a9db40da66c4535032.mesh", "res://.godot/imported/Simple_Banner_Blue.obj-158a9b61e77e32a9db40da66c4535032.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

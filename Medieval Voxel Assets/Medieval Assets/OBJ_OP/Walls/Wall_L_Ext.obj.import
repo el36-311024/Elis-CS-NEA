@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://euscl2uviqek"
+path="res://.godot/imported/Wall_L_Ext.obj-360c10d65ce56c72b00431105392fe7c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Wall_L_Ext.obj-360c10d65ce56c72b00431105392fe7c.mesh"]
+
+source_file="res://Medieval Voxel Assets/Medieval Assets/OBJ_OP/Walls/Wall_L_Ext.obj"
+dest_files=["res://.godot/imported/Wall_L_Ext.obj-360c10d65ce56c72b00431105392fe7c.mesh", "res://.godot/imported/Wall_L_Ext.obj-360c10d65ce56c72b00431105392fe7c.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

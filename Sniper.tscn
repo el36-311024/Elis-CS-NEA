@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://b23icma7aqnh1"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4ti2x"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xcl07"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6jcko"]
+
+[node name="Sniper" type="Node3D"]
+
+[node name="Handle" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.296782, 0.0146083, 0, -0.0438249, 0.0989272, 0.30707, 0.635565, -0.557311)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.7, 0.307, 0.697899, -0.744507)
+mesh = SubResource("BoxMesh_xcl07")
+skeleton = NodePath("")
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -8.74228e-09, -0.15, 0, 0.2, -6.55671e-09, 0.307, 0.679545, -0.098784)
+mesh = SubResource("CapsuleMesh_6jcko")
+skeleton = NodePath("../Shooter")
+
+[node name="Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.09, 0, 0, 0, -5.24537e-08, -0.09, 0, 1.2, -3.93403e-09, 0.307, 0.711195, -1.13292)
+mesh = SubResource("CapsuleMesh_6jcko")
+skeleton = NodePath("../..")
+
+[node name="Scope" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-16, 1.31134e-08, 0.1, 0.1, -1.31134e-08, 0, 4.37114e-09, 0.3, -4.37114e-09, 0.30707, 0.90562, -0.726889)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="EndPoint" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-16, 1.31134e-08, 0.1, 0.1, -1.31134e-08, 0, 4.37114e-09, 0.3, -4.37114e-09, 0.30707, 0.712549, -2.16614)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="UpperBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.0989272, 0.0146083, 0, -0.0146083, 0.0989272, 0.30707, 0.842234, -0.756727)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="FrontScope" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.29282e-16, 6.55671e-09, 0.12, 0.12, -6.55671e-09, 1.58819e-23, 5.24537e-09, 0.15, -5.24537e-09, 0.30707, 0.912368, -0.934897)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="RightStand" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0738606, -0.043412, 0, 0.0130236, 0.246202, 0, 0, 0, 0.075, 0.367402, 0.402283, -1.02403)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="LeftStand" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0738606, 0.043412, 0, -0.0130236, 0.246202, 0, 0, 0, 0.075, 0.250782, 0.402283, -1.02403)
+mesh = SubResource("CapsuleMesh_4ti2x")
+skeleton = NodePath("../..")
+
+[node name="BulletHole" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.299, 0.712409, -2.5273)
+
+[node name="AimPosition" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.299, 0.90643287, -1.1253647)

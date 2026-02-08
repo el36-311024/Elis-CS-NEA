@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://bpkbugrxdlqfc"]
+
+[ext_resource type="Script" uid="uid://cciwemhmi6bek" path="res://CapturePoint.cs" id="1_hpmlk"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_auwcq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpmlk"]
+transparency = 1
+albedo_color = Color(0.36078432, 0.7294118, 0, 0.49019608)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hpmlk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_auwcq"]
+albedo_color = Color(0.23137255, 1, 0.23137255, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_auwcq"]
+
+[node name="CapturePoint" type="Node3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = ExtResource("1_hpmlk")
+
+[node name="CaptureAreaColour" type="MeshInstance3D" parent="."]
+transform = Transform3D(7.5, 0, 0, 0, 100, 0, 0, 0, 7.5, 0, 100, 0)
+mesh = SubResource("CylinderMesh_auwcq")
+surface_material_override/0 = SubResource("StandardMaterial3D_hpmlk")
+
+[node name="CaptureAreaPad" type="MeshInstance3D" parent="."]
+transform = Transform3D(7.5, 0, 0, 0, 0.01, 0, 0, 0, 7.5, 0, 0, 0)
+mesh = SubResource("CylinderMesh_hpmlk")
+surface_material_override/0 = SubResource("StandardMaterial3D_auwcq")
+
+[node name="CaptureArea" type="Area3D" parent="."]
+
+[node name="Capture" type="CollisionShape3D" parent="CaptureArea"]
+transform = Transform3D(7.5, 0, 0, 0, 100, 0, 0, 0, 7.5, 0, 99, 0)
+shape = SubResource("CylinderShape3D_auwcq")

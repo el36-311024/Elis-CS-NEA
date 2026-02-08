@@ -1,0 +1,117 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvgkd3rjk1l23"]
+
+[ext_resource type="Script" uid="uid://dfophmm2bkx6u" path="res://respawn.cs" id="1_dsqut"]
+
+[node name="respawn" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dsqut")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.03
+anchor_right = 1.0
+anchor_bottom = 0.97
+offset_top = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Title"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 75
+text = "Respawn - Select Your Character"
+horizontal_alignment = 1
+
+[node name="CharacterSelection" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 175
+alignment = 1
+
+[node name="Seperation" type="Control" parent="MarginContainer/CharacterSelection"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CharacterSelection"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="seperation" type="Control" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+
+[node name="pistol" type="Button" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Pistol"
+
+[node name="Seperation" type="Control" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+
+[node name="rifle1" type="Button" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rifle1"
+
+[node name="Seperation2" type="Control" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+
+[node name="rifle2" type="Button" parent="MarginContainer/CharacterSelection/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rifle2"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/CharacterSelection"]
+layout_mode = 2
+theme_override_constants/separation = 70
+
+[node name="seperation" type="Control" parent="MarginContainer/CharacterSelection/VBoxContainer2"]
+layout_mode = 2
+
+[node name="heavy" type="Button" parent="MarginContainer/CharacterSelection/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Heavy"
+
+[node name="sniper" type="Button" parent="MarginContainer/CharacterSelection/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Sniper"
+
+[node name="Character Screen" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Character Screen"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/Character Screen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 500)
+layout_mode = 2
+
+[connection signal="pressed" from="MarginContainer/CharacterSelection/VBoxContainer/pistol" to="." method="PistolRespawn"]
+[connection signal="pressed" from="MarginContainer/CharacterSelection/VBoxContainer/rifle1" to="." method="Rifle1Respawn"]
+[connection signal="pressed" from="MarginContainer/CharacterSelection/VBoxContainer/rifle2" to="." method="Rifle2Respawn"]
+[connection signal="pressed" from="MarginContainer/CharacterSelection/VBoxContainer2/heavy" to="." method="HeavyRespawn"]
+[connection signal="pressed" from="MarginContainer/CharacterSelection/VBoxContainer2/sniper" to="." method="SniperRespawn"]

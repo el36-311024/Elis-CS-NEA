@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dj6w48i8ngv1f"
+path="res://.godot/imported/Tower_Window_Small_On.obj-45c734aa31c0601f1dacfaa43e8add10.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Tower_Window_Small_On.obj-45c734aa31c0601f1dacfaa43e8add10.mesh"]
+
+source_file="res://Medieval Voxel Assets/Medieval Assets/OBJ_OP/Towers/Tower_Window_Small_On.obj"
+dest_files=["res://.godot/imported/Tower_Window_Small_On.obj-45c734aa31c0601f1dacfaa43e8add10.mesh", "res://.godot/imported/Tower_Window_Small_On.obj-45c734aa31c0601f1dacfaa43e8add10.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

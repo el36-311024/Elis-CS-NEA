@@ -1,0 +1,125 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1qfy54jo54qf"]
+
+[ext_resource type="Script" uid="uid://1foahxe56xpc" path="res://Option.cs" id="1_cd5v0"]
+
+[node name="option" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cd5v0")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.955
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title Position" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="MarginContainer/Title Position"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Option"
+
+[node name="Entire Setting" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 150
+
+[node name="Seperation" type="Control" parent="MarginContainer/Entire Setting"]
+layout_mode = 2
+
+[node name="Setting" type="VBoxContainer" parent="MarginContainer/Entire Setting"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+
+[node name="Volume" type="Label" parent="MarginContainer/Entire Setting/Setting"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Main Volume"
+vertical_alignment = 1
+
+[node name="Music" type="Label" parent="MarginContainer/Entire Setting/Setting"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Music"
+vertical_alignment = 1
+
+[node name="SFX" type="Label" parent="MarginContainer/Entire Setting/Setting"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "SFX"
+vertical_alignment = 1
+
+[node name="CreditsHelpScreen" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 150
+
+[node name="Seperation" type="Control" parent="MarginContainer/CreditsHelpScreen"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CreditsHelpScreen"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 25
+
+[node name="Credits" type="Button" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Credits"
+
+[node name="Seperation" type="Control" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+
+[node name="Help" type="Button" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Help
+"
+
+[node name="Seperation2" type="Control" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+
+[node name="Screen" type="Button" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Screen"
+
+[node name="Seperation3" type="Control" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="MarginContainer/CreditsHelpScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/CreditsHelpScreen/HBoxContainer/Credits" to="." method="CreditsPressed"]
+[connection signal="pressed" from="MarginContainer/CreditsHelpScreen/HBoxContainer/Help" to="." method="HelpPressed"]
+[connection signal="pressed" from="MarginContainer/CreditsHelpScreen/HBoxContainer/Screen" to="." method="ScreenPressed"]
+[connection signal="pressed" from="MarginContainer/CreditsHelpScreen/HBoxContainer/Back" to="." method="BackPressed"]

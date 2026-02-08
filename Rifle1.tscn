@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://h31xqbo2ap2p"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_icd0i"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yvva4"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_e5w8l"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_o7iyo"]
+
+[node name="Rifle1" type="Node3D"]
+transform = Transform3D(0.9999904, 0, 0.0043807626, 0, 1, 0, -0.0043807626, 0, 0.9999904, 0, 0, 0)
+
+[node name="Handle" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.197854, 0.0146083, 0, -0.0292166, 0.0989272, 0.30707, 0.411491, -0.269173)
+mesh = SubResource("CapsuleMesh_icd0i")
+skeleton = NodePath("../..")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.7, 0.307, 0.548848, -0.538789)
+mesh = SubResource("BoxMesh_yvva4")
+skeleton = NodePath("")
+
+[node name="Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, 0.307, 0.562144, -1.07337)
+mesh = SubResource("CapsuleMesh_e5w8l")
+skeleton = NodePath("../..")
+
+[node name="2ndHandle" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.148391, 0.0146083, 0, -0.0219125, 0.0989272, 0.30707, 0.425733, -0.691659)
+mesh = SubResource("CapsuleMesh_icd0i")
+skeleton = NodePath("../..")
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.095, 0, 0, 0, -1.31134e-08, -0.15, 0, 0.3, -6.55671e-09, 0.307, 0.530494, -0.318666)
+mesh = SubResource("CapsuleMesh_o7iyo")
+skeleton = NodePath("../Shooter")
+
+[node name="BulletHole" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.303, 0.563, -1.67716)
+
+[node name="AimPosition" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.303, 0.72205013, -0.05834055)

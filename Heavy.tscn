@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://bphooejaoyhcm"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f62vv"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ojdgy"]
+
+[node name="Heavy" type="Node3D"]
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, -8.74228e-09, -0.4, 0, 0.2, -1.74846e-08, 0.425392, 0.075033, -0.581541)
+mesh = SubResource("CylinderMesh_f62vv")
+skeleton = NodePath("../..")
+
+[node name="SideHandle" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.2, 0, 0, 0, 0.05, 0.558883, 0.182625, -0.571329)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../..")
+
+[node name="TopHandle" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.18557e-09, -0.15, 0, 0.05, -6.55671e-09, 0, 0, 0, 0.05, 0.42188, 0.359381, -0.571745)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="4Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.42188, -0.00900968, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="1Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.42188, 0.152027, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="5Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.490135, 0.029448, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="3Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.362605, 0.0267623, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="6Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.490569, 0.103963, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="2Shooter" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-08, -0.05, 0, 0.5, -2.18557e-09, 0.358312, 0.112401, -0.970543)
+mesh = SubResource("CylinderMesh_ojdgy")
+skeleton = NodePath("../SideHandle")
+
+[node name="Barell" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-09, -0.25, 0, 0.025, -1.09278e-08, 0.425392, 0.0699205, -1.4079)
+mesh = SubResource("CylinderMesh_f62vv")
+skeleton = NodePath("../..")
+
+[node name="2ndBarell" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-09, -0.25, 0, 0.025, -1.09278e-08, 0.425392, 0.0699205, -1.13773)
+mesh = SubResource("CylinderMesh_f62vv")
+skeleton = NodePath("../..")
+
+[node name="3rdBarell" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-09, -0.25, 0, 0.025, -1.09278e-08, 0.425392, 0.0699205, -1.01076)
+mesh = SubResource("CylinderMesh_f62vv")
+skeleton = NodePath("../..")
+
+[node name="BulletHole" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.154516, -1.57852)
+
+[node name="AimPosition" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28753784, 0.7646613, -0.5924958)

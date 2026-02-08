@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1flirmf2hsax"]
+
+[ext_resource type="Script" uid="uid://dgl0ccf2476vk" path="res://BulletTeam.cs" id="1_e4d0s"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uqrau"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_5idjs"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_psjgy"]
+
+[node name="BulletTeam" type="CharacterBody3D"]
+script = ExtResource("1_e4d0s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -2.6226832e-09, -0.1, 0, 0.06, -4.371139e-09, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_uqrau")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("ORMMaterial3D_5idjs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, -0.1, 0, 0.1, -4.37114e-09, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_psjgy")
+debug_color = Color(0.856867, 0.273981, 0.617259, 0.42)
