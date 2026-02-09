@@ -98,7 +98,7 @@ public partial class enemy : RigidBody3D
 		{
 			case "Pistol":
 				detectionRange = 30f;
-				minDistance = 15f;
+				minDistance = 20f;
 				ammoAmount = 12;
 				reloadTime = 2f;
 				fireRate = 0.3f;
@@ -106,7 +106,7 @@ public partial class enemy : RigidBody3D
 
 			case "Rifle1":
 				detectionRange = 40f;
-				minDistance = 20f;
+				minDistance = 30f;
 				ammoAmount = 50;
 				reloadTime = 3f;
 				fireRate = 0.5f;
@@ -114,7 +114,7 @@ public partial class enemy : RigidBody3D
 
 			case "Rifle2":
 				detectionRange = 40f;
-				minDistance = 20f;
+				minDistance = 35f;
 				ammoAmount = 36;
 				reloadTime = 2f;
 				fireRate = 0.3f;
@@ -306,7 +306,7 @@ public partial class enemy : RigidBody3D
 	}
 	
 	private void HandleRotation(double delta)
-	{ 
+	{  
 		if (CurrentHealth<26)
 		{
 			if (IsTeamInDetectionRange())
@@ -446,7 +446,7 @@ public partial class enemy : RigidBody3D
 	}
 	
 	private void MoveUsingNavigation(Vector3 target, double delta)
-	{ 
+	{  
 		if (bulletDodgeTimer > 0f && IsChasingViaSight())
 		{
 			bulletDodgeTimer -= (float)delta;
@@ -665,49 +665,44 @@ public partial class enemy : RigidBody3D
 	}
 	
 	private void State_GuardingCapturePoint(double delta)
-	{
-		if (ShootDecider(out Node3D target))
-		{
-			currentTarget = target;
-			ApplyMovement(Vector3.Zero, 0f);
-			return;
-		}
-		
+	{ 
 		if (IsTeamInDetectionRange())
 		{
 			ChangeState(EnemyState.InCombat);
 			return;
 		}
-
+ 
+		if (ShootDecider(out Node3D target))
+		{
+			currentTarget = target;
+			ApplyMovement(Vector3.Zero, 0f);  
+			return;
+		}
+ 
 		if (IsCloseCombat())
 		{
 			UpdateTarget();
 			Shooting();
 		}
-
+ 
 		guardRepathTimer -= (float)delta;
 
-		if (guardTarget == Vector3.Zero || guardRepathTimer <= 0f || GlobalPosition.DistanceTo(guardTarget) < 0.6f)
+		bool needNewPoint = guardTarget == Vector3.Zero || guardRepathTimer <= 0f || GlobalPosition.DistanceTo(guardTarget) < 1f;
+
+		if (needNewPoint)
 		{
 			guardTarget = PickRandomPointInCapturePoint();
 			guardRepathTimer = GuardRepathInterval;
 		}
-
-		if (!IsTeamInDetectionRange())
-		{
-			MoveUsingNavigation(guardTarget, delta);
-		}
-		else
-		{
-			ApplyMovement(Vector3.Zero, 0f);
-		}
-
+ 
+		MoveUsingNavigation(guardTarget, delta);
+ 
 		if (!IsCaptureOwnedByEnemy())
 		{
 			return;
 		}
 
-		if (!decidedToStay && !decidedToLeave && IsCaptureOwnedByEnemy())
+		if (!decidedToStay && !decidedToLeave)
 		{
 			if (rng.Randf() < 0.5f)
 			{
@@ -732,7 +727,7 @@ public partial class enemy : RigidBody3D
 				return;
 			}
 		}
-	}
+	} 
 	
 	private void ForceLeaveCapturePoint()
 	{
@@ -804,40 +799,39 @@ public partial class enemy : RigidBody3D
 	}
 
 	
-	private void LookMovement(double delta)
-	{
-		Vector3 lookDirection = Vector3.Zero;
-		Vector3 velocity = LinearVelocity;
-		velocity.Y = 0;
-
-		if (velocity.LengthSquared() > 0.01f)
-		{
-			lookDirection = velocity.Normalized();
-		}
-		else if (MovementEnemy != null && MovementEnemy.IsNavigationFinished() == false)
+	private void LookMovement(double delta) 
+	{ 
+		Vector3 lookDirection = Vector3.Zero; 
+		Vector3 velocity = LinearVelocity; 
+		velocity.Y = 0; 
+		
+		if (velocity.LengthSquared() > 0.01f) 
 		{ 
-			Vector3 next = MovementEnemy.GetNextPathPosition();
-			Vector3 NextDirection = next - GlobalPosition;
-			NextDirection.Y = 0;
-
-			if (NextDirection.LengthSquared() > 0.001f)
+			lookDirection = velocity.Normalized(); 
+		} 
+		else if (MovementEnemy != null && MovementEnemy.IsNavigationFinished() == false) 
+		{ 
+			Vector3 next = MovementEnemy.GetNextPathPosition(); 
+			Vector3 dir = next - GlobalPosition; dir.Y = 0; 
+			
+			if (dir.LengthSquared() > 0.001f) 
 			{
-				lookDirection = NextDirection.Normalized();
+				lookDirection = dir.Normalized(); 
 			}
-		}
-		else
-		{
-			return;
-		}
-
-		Vector3 currentDirection = -GlobalTransform.Basis.Z;
-		currentDirection.Y = 0;
-		currentDirection = currentDirection.Normalized();
-		float angle = Mathf.Atan2(lookDirection.X, lookDirection.Z) - Mathf.Atan2(currentDirection.X, currentDirection.Z);
-		angle = Mathf.Wrap(angle, -Mathf.Pi, Mathf.Pi);
-		float rotateStep = rotationSpeed;
-		angle = Mathf.Clamp(angle, -rotateStep, rotateStep);
-		RotateY(angle);
+		} 
+		else 
+		{ 
+			return; 
+		} 
+		
+		Vector3 currentDirection = -GlobalTransform.Basis.Z; 
+		currentDirection.Y = 0; 
+		currentDirection = currentDirection.Normalized(); 
+		float angle = Mathf.Atan2(lookDirection.X, lookDirection.Z) - Mathf.Atan2(currentDirection.X, currentDirection.Z); 
+		angle = Mathf.Wrap(angle, -Mathf.Pi, Mathf.Pi); 
+		float rotateStep = rotationSpeed; 
+		angle = Mathf.Clamp(angle, -rotateStep, rotateStep); 
+		RotateY(angle); 
 	}
 	
 	private Vector3 PickRandomPointInCapturePoint()

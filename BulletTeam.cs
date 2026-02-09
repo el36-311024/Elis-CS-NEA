@@ -54,22 +54,22 @@ public partial class BulletTeam : CharacterBody3D
 					Damage = 10f;
 					break;
 				case "Heavy":
-					MoveSpeed = 500f;
+					MoveSpeed = 200f;
 					MaxDistance = 200f;
 					Damage = 5f;
 					break;
 				case "Sniper":
-					MoveSpeed = 750f;
+					MoveSpeed = 250f;
 					MaxDistance = 500f;
 					Damage = 50f;
 					break;
 				case "Rifle1":
-					MoveSpeed = 175f;
+					MoveSpeed = 125f;
 					MaxDistance = 250f;
 					Damage = 15f;
 					break;
 				case "Rifle2":
-					MoveSpeed = 200f;
+					MoveSpeed = 130f;
 					MaxDistance = 250f;
 					Damage = 20f;
 					break;

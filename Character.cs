@@ -65,7 +65,7 @@ public partial class Character : RigidBody3D
 	int ammo = 0;
 	bool Reloading = false;
 	
-	public float MaxHealth = 100f;
+	public float MaxHealth = 10000f;
 	private float CurrentHealth;
 	private ProgressBar HealthBar;
 	

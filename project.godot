@@ -13,7 +13,8 @@ config_version=5
 config/name="CS NEA"
 run/main_scene="uid://ckwr2vxivoq0p"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
-run/max_fps=120
+run/low_processor_mode=true
+run/low_processor_mode_sleep_usec=10000
 config/icon="res://icon.svg"
 
 [autoload]
@@ -105,17 +106,27 @@ locale/quality/msaa_3d=1
 
 [physics]
 
+common/physics_ticks_per_second=100
 common/physics_jitter_fix=0.0
 3d/physics_engine="Jolt Physics"
-3d/solver/solver_iterations=12
+3d/solver/solver_iterations=18
 common/physics_interpolation=true
 
 [rendering]
 
+occlusion_culling/bvh_build_quality=0
 renderer/rendering_method="gl_compatibility"
+reflections/sky_reflections/roughness_layers=1
+reflections/reflection_atlas/reflection_size=128
+shading/overrides/force_vertex_shading=true
+shading/overrides/force_lambert_over_burley=true
+camera/depth_of_field/depth_of_field_bokeh_shape=0
+camera/depth_of_field/depth_of_field_bokeh_quality=0
 environment/ssao/quality=0
 environment/ssil/quality=0
 anti_aliasing/quality/msaa_3d=1
+occlusion_culling/occlusion_rays_per_thread=300
 environment/glow/upscale_mode=0
+global_illumination/sdfgi/frames_to_converge=0
 environment/volumetric_fog/use_filter=0
 occlusion_culling/use_occlusion_culling=true
