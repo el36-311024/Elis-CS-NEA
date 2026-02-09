@@ -805,7 +805,7 @@ public partial class enemy : RigidBody3D
 		Vector3 velocity = LinearVelocity; 
 		velocity.Y = 0; 
 		
-		if (velocity.LengthSquared() > 0.01f) 
+		if (velocity.LengthSquared() > 0.5f) 
 		{ 
 			lookDirection = velocity.Normalized(); 
 		} 

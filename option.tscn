@@ -51,30 +51,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 50
 
-[node name="Volume" type="Label" parent="MarginContainer/Entire Setting/Setting"]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 30
-text = "Main Volume"
-vertical_alignment = 1
-
-[node name="Music" type="Label" parent="MarginContainer/Entire Setting/Setting"]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 30
-text = "Music"
-vertical_alignment = 1
-
-[node name="SFX" type="Label" parent="MarginContainer/Entire Setting/Setting"]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 30
-text = "SFX"
-vertical_alignment = 1
-
 [node name="CreditsHelpScreen" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 8
