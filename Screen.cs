@@ -7,7 +7,7 @@ public partial class Screen : Control
 	
 	public override void _Ready()
 	{
-		backButton = GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/Back");
+		backButton = GetNode<Button>("MarginContainer/HBoxContainer/Back");
 	}
 	
 	private void BackPressed()

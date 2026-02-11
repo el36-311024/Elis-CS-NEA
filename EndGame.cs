@@ -25,12 +25,11 @@ public partial class EndGame : Control
 		exit = GetNode<Button>("Exit");
 		DisplayResults();
 	}
-
+	
 	private void exitButton()
 	{
-		KillManager.Instance?.UnregisterUI();
-		CaptureManager.Instance?.Reset();
-		MatchStats.Instance?.Reset();
+		int finalScore = MatchStats.Instance.CalculateFinalScore();
+		AccountManager.Instance?.TryUpdateScore(finalScore);
 		GetTree().ChangeSceneToFile("res://Menu.tscn");
 	}
 	

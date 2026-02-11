@@ -23,6 +23,7 @@ GlobalData="*res://GlobalData.cs"
 KillManager="*res://KillManager.cs"
 CaptureManager="*res://CaptureManager.cs"
 MatchStats="*res://MatchStats.cs"
+AccountManager="*res://AccountManager.cs"
 
 [debug]
 

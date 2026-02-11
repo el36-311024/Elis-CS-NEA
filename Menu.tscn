@@ -101,6 +101,14 @@ theme_override_fonts/font = SubResource("SystemFont_mae5d")
 theme_override_font_sizes/font_size = 30
 text = "Quit"
 
+[node name="LogInOrSignUp" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
+text = "Log In or Sign Up"
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/start" to="." method="startPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Option" to="." method="OptionPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Quit" to="." method="QuitPressed"]
+[connection signal="pressed" from="MarginContainer/LogInOrSignUp" to="." method="LogInOrSignUpPressed"]

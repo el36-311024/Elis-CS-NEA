@@ -77,6 +77,8 @@ public partial class enemy : RigidBody3D
 	
 	public override void _Ready()
 	{
+		Sleeping = false;
+		CanSleep = false;
 		CurrentHealth = MaxHealth;
 		AxisLockAngularX = true;
    		AxisLockAngularZ = true;
@@ -453,11 +455,6 @@ public partial class enemy : RigidBody3D
 			Vector3 dodgeDirection = GetSmoothCombatDirection(delta);
 			dodgeDirection.Y = 0;
 			ApplyMovement(dodgeDirection.Normalized(), moveSpeed);
-			return;
-		}
-
-		if (IsTeamInDetectionRange() && CurrentHealth > 25)
-		{
 			return;
 		}
  

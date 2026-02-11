@@ -6,7 +6,7 @@ public partial class Character : RigidBody3D
 {
 	private float MouseSensitivity = 0.005f;
 	private float zoomSensitivity = 0.0015f;
-	private float Speed = 7.5f;
+	private float Speed = 20f;
 	private float Jump = 10f;
 	private float accumulatedRotating = 0f;
 	private float rotating = 0f; 
@@ -65,7 +65,7 @@ public partial class Character : RigidBody3D
 	int ammo = 0;
 	bool Reloading = false;
 	
-	public float MaxHealth = 10000f;
+	public float MaxHealth = 100f;
 	private float CurrentHealth;
 	private ProgressBar HealthBar;
 	

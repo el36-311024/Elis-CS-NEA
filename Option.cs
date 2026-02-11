@@ -7,13 +7,31 @@ public partial class Option : Control
 	private Button helpButton;
 	private Button screenButton;
 	private Button backButton;
-	
+	private VBoxContainer leaderboardContainer;
+
 	public override void _Ready()
 	{
 		creditsButton = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Credits");
-		helpButton = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Help");
-		screenButton = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Screen");
-		backButton = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Back");
+		helpButton    = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Help");
+		screenButton  = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Screen");
+		backButton    = GetNode<Button>("MarginContainer/CreditsHelpScreen/HBoxContainer/Back");
+		leaderboardContainer = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
+
+		PopulateLeaderboard();
+	}
+
+	private void PopulateLeaderboard()
+	{
+		var leaderboard = AccountManager.Instance.GetLeaderboard();
+
+		foreach (var user in leaderboard)
+		{
+			Label l = new Label();
+			l.Text = $"{user.Nickname} - {user.BestScore}";
+			l.HorizontalAlignment = HorizontalAlignment.Center;
+
+			leaderboardContainer.AddChild(l);   // ✅ CORRECT
+		}
 	}
 	
 	private void CreditsPressed()

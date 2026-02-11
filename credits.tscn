@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://5s8qi8n8qvn6" path="res://Credits.cs" id="1_nm7lk"]
 
-[node name="Control" type="Control"]
+[node name="Credits" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cytnp7yx4ae85" path="res://Help.cs" id="1_e3oed"]
 
-[node name="Control" type="Control"]
+[node name="Help" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
