@@ -19,6 +19,7 @@ public partial class CaptureManager : Node
 		Instance = this;
 		points.Clear();
 
+		//retrieves all possible capture point (if any)
 		foreach (Node n in GetTree().GetNodesInGroup("CapturePoint"))
 		{
 			if (n is CapturePoint point)
@@ -30,6 +31,7 @@ public partial class CaptureManager : Node
 		RegisterCaptureBars();
 	}
 	
+	//reset all capture point when player has restarted game
 	public void Reset()
 	{
 		teamScore = 0;
@@ -41,7 +43,8 @@ public partial class CaptureManager : Node
 			cp.ResetPoint();
 		}
 	}
-
+	
+	//sets the capture point to have max and min value
 	public void RegisterCaptureBars()
 	{
 		foreach (var cp in points)
@@ -54,7 +57,8 @@ public partial class CaptureManager : Node
 			}
 		}
 	}
-
+	
+	//changes the capture point in game, so when team is inside, it goes up. If enemy is inside, it goes down
 	public void CaptureChanged(CapturePoint.OwnerType oldOwner, CapturePoint.OwnerType newOwner)
 	{
 		if (oldOwner == CapturePoint.OwnerType.Team) 
@@ -77,7 +81,8 @@ public partial class CaptureManager : Node
 		TeamCaptureCount = teamScore;
 		CheckWinLoss();
 	}
-
+	
+	//checks if team or enemy won. then goes to screen saying defeat or victory depending on outcome
 	private void CheckWinLoss()
 	{
 		if (teamScore >= WinScore)

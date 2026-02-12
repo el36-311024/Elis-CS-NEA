@@ -16,13 +16,15 @@ public partial class KillManager : Node
 		Instance = this;
 	}
 	
+	//when game restarts, the kills scores are reset
 	public void Reset()
 	{
 		TeamKills = 0;
 		EnemyKills = 0;
 		UpdateUI();
 	}
-
+	
+	//shows the progress bar of each capture, ensures they have max and min value
 	public void RegisterUI(ProgressBar teamBar, ProgressBar enemyBar, Label teamCount, Label enemyCount)
 	{
 		TeamBar = teamBar;
@@ -33,7 +35,8 @@ public partial class KillManager : Node
 		EnemyBar.MaxValue = MaxKills;
 		UpdateUI();
 	}
-
+	
+	//if team/enemy gets killed, the counter increments by 1
 	private void UpdateUI()
 	{
 		if (IsInstanceValid(TeamBar))
@@ -56,21 +59,23 @@ public partial class KillManager : Node
 			EnemyCount.Text = EnemyKills.ToString();
 		}
 	}
-
+	
+	//add the total amount of kills for team
 	public void AddTeamKill()
 	{
 		TeamKills++;
 		UpdateUI();
 		CheckWin();
 	}
-
+	//add the total amount of kills for enemy
 	public void AddEnemyKill()
 	{
 		EnemyKills++;
 		UpdateUI();
 		CheckWin();
 	}
-
+	
+	//checks whether team/enemy won and display the necessary information
 	private void CheckWin()
 	{
 		if (TeamKills >= MaxKills)

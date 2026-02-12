@@ -17,10 +17,12 @@ public partial class BulletEnemy : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		//makes bullet travel in a straight line
 		Vector3 motion = Direction * MoveSpeed * (float)delta;
 		KinematicCollision3D collision = MoveAndCollide(motion);
 		distanceTraveled += motion.Length();
 
+		//if bullet collides, it will damage character/team/enemy, then despawns
 		if (collision != null)
 		{
 			if (collision.GetCollider() is Character character)
@@ -37,13 +39,15 @@ public partial class BulletEnemy : CharacterBody3D
 			}
 			Despawn();
 		}
-
+		
+		//despawns after certain distance, so it doesnt travel infinitely
 		if (distanceTraveled >= MaxDistance)
 		{
 			Despawn();
 		}
 		}
 		
+		//depending on gun type, it changes the bullets attributes
 		public void SetGunType(string InputGun)
 		{
 			switch(InputGun)
@@ -76,6 +80,7 @@ public partial class BulletEnemy : CharacterBody3D
 			}
 		}
 		
+		//method to remove bullet from the scene
 		private void Despawn()
 		{
 			QueueFree();

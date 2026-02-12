@@ -20,6 +20,7 @@ public partial class CapturePoint : Node3D
 		string nodeName = Name.ToString(); 
 		var canvas = GetTree().Root.GetNode("Map/CM/CanvasLayer"); 
 		
+		//finds all capture point and assign it to a number
 		switch (nodeName) 
 		{ 
 			case "CapturePoint1": 
@@ -32,13 +33,14 @@ public partial class CapturePoint : Node3D
 				Bar = canvas.GetNode<ProgressBar>("CapturePointC"); 
 				break; 
 			default: 
-				GD.PrintErr("Unknown capture point node name: " + nodeName); 
 				break; 
 		} 
+		//overrides the colour of the capture point
 		AddToGroup("CapturePoint"); 
 		var mat = areaColour.GetActiveMaterial(0) as StandardMaterial3D; 
 		mat = (StandardMaterial3D)mat.Duplicate(); 
 		areaColour.SetSurfaceOverrideMaterial(0, mat); 
+		//see whos entered and exit the capture point
 		captureArea.BodyEntered += OnBodyEntered; 
 		captureArea.BodyExited += OnBodyExited; 
 		UpdateColour(); 
@@ -56,6 +58,7 @@ public partial class CapturePoint : Node3D
 		
 		float speed = (float)delta; 
 		
+		//tells the bar how fast it should go up by and set its owner (team/enemy)
 		if (teamCount > 0 && enemyCount == 0) 
 		{ 
 			if (Owner == OwnerType.Enemy) 
@@ -99,11 +102,12 @@ public partial class CapturePoint : Node3D
 		{ 
 			SetOwner(OwnerType.Enemy); 
 		} 
-		
+		 //adds the bar value by the certain amount
 		float normalized = (progress + CaptureTime) / (CaptureTime * 2f); 
 		Bar.Value = normalized * 100f; 
 	} 
 	
+	//checks if team or enemy has captured it
 	private void SetOwner(OwnerType newOwner) 
 	{ 
 		if (Owner == newOwner) 
@@ -131,6 +135,7 @@ public partial class CapturePoint : Node3D
 		CaptureManager.Instance?.CaptureChanged(oldOwner, newOwner); 
 	} 
 	
+	//changes the colour depending on the owner
 	private void UpdateColour() 
 	{ 
 		Color c = new Color(0, 1, 0, 0.05f); 
@@ -153,18 +158,27 @@ public partial class CapturePoint : Node3D
 		mat.AlbedoColor = c; 
 	} 
 	
+	//checks if team/enemy has entered
 	private void OnBodyEntered(Node body) 
 	{ 
-		if (body.IsInGroup("Team")) teamInside.Add(body); 
-		if (body.IsInGroup("Enemy")) enemyInside.Add(body); 
+		if (body.IsInGroup("Team")) 
+		{
+			teamInside.Add(body); 
+		}
+		if (body.IsInGroup("Enemy")) 
+		{
+			enemyInside.Add(body); 
+		}
 	} 
 	
+	//checks if team/enemy has left
 	private void OnBodyExited(Node body) 
 	{ 
 		teamInside.Remove(body); 
 		enemyInside.Remove(body); 
 	} 
 	
+	//reset how many has been captured after round has ended
 	public void ResetPoint()
 	{ 
 		Owner = OwnerType.Neutral; 

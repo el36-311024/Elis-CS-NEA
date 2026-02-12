@@ -19,21 +19,24 @@ public partial class Option : Control
 
 		PopulateLeaderboard();
 	}
-
+	
+	//displays all the information of all accounts that have scores
 	private void PopulateLeaderboard()
 	{
 		var leaderboard = AccountManager.Instance.GetLeaderboard();
-
+		
+		//puts them in order
 		foreach (var user in leaderboard)
 		{
 			Label l = new Label();
 			l.Text = $"{user.Nickname} - {user.BestScore}";
 			l.HorizontalAlignment = HorizontalAlignment.Center;
 
-			leaderboardContainer.AddChild(l);   // ✅ CORRECT
+			leaderboardContainer.AddChild(l);
 		}
 	}
 	
+	//goes to the credit scene
 	private void CreditsPressed()
 	{
 		PackedScene creditsScene = GD.Load<PackedScene>("res://credits.tscn");
@@ -42,6 +45,7 @@ public partial class Option : Control
 		this.QueueFree();
 	}
 	
+	//goes to the help screen
 	private void HelpPressed()
 	{
 		PackedScene helpScene = GD.Load<PackedScene>("res://help.tscn");
@@ -49,6 +53,8 @@ public partial class Option : Control
 		GetTree().Root.AddChild(helpInstance);
 		this.QueueFree();
 	}
+	
+	//goes to the screen settings
 	private void ScreenPressed()
 	{
 		PackedScene screenScene = GD.Load<PackedScene>("res://screen.tscn");
@@ -57,6 +63,7 @@ public partial class Option : Control
 		this.QueueFree();
 	}
 	
+	//go back to the menu scene
 	private void BackPressed()
 	{
 		PackedScene backScene = GD.Load<PackedScene>("res://Menu.tscn");

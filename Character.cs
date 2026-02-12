@@ -85,6 +85,7 @@ public partial class Character : RigidBody3D
 
 	public override void _Ready()
 	{
+		//fetches the camera to see
 		Cam = GetNode<Node3D>("Cam");
 		Camera = GetNode<Camera3D>("Cam/Camera");
 		Camera.Current = true;
@@ -140,6 +141,7 @@ public partial class Character : RigidBody3D
 		SetZoomValuesByGun(selectedGun);
 		AddToGroup("Team");
 		
+		//removes all the unnecessary guns that are not being used
 		foreach (Node child in gunHolder.GetChildren())
 		{
 			child.QueueFree();
@@ -150,37 +152,21 @@ public partial class Character : RigidBody3D
 		gunHolder.AddChild(gunInstance);
 		currentGun = gunInstance;
 		BulletScene = GD.Load<PackedScene>("res://BulletTeam.tscn");
-		
-		switch (selectedGun)
-		{
-			case "Pistol":
-				ammo = 12;
-				break;
-			case "Heavy":
-				ammo = 100;
-				break;
-			case "Sniper":
-				ammo = 2;
-				break;
-			case "Rifle1":
-				ammo = 50;
-				break;
-			case "Rifle2":
-				ammo = 36;
-				break;
-		}	
 	}
 
+	//inputs during game to move
 	public override void _Input(InputEvent @event)
 	{
+		//locks mouse
 		if (Input.IsActionPressed("Click") || @event is InputEventKey eventKey && eventKey.Pressed)
 		{
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
+		//moves the character looking direction
 		if (@event is InputEventMouseMotion mouseMotion && Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			float sens = 0f;
-			
+			//checks if zooming in on gun
 			if (isZoomed == true)
 			{
 				sens = zoomSensitivity;
@@ -206,19 +192,19 @@ public partial class Character : RigidBody3D
 		{
 			isZoomed = false;
 		}
-		
+		//releases the mouse
 		if (Input.IsActionPressed("esc"))
 		{
 			Input.MouseMode = Input.MouseModeEnum.Visible;
 		}
-		
+		//checks if player is crouching
 		isCrouching = Input.IsActionPressed("Crouch");
 	}
 		
 	public override void _PhysicsProcess(double delta)
 	{
 		isCrouching = Input.IsActionPressed("Crouch");
-		
+		//checks if player clicks shoot. If they do, calls the shoot method
 		if (Input.IsActionPressed("Click") && !Reloading)
 		{
 			Shoot();
@@ -237,7 +223,7 @@ public partial class Character : RigidBody3D
 			
 			Reloading = false;
 			gunSpinAngle = 0f;
-			
+			//changes the ammo amount on each gun
 			switch(selectedGun)
 			{
 				case "Pistol":
@@ -258,6 +244,7 @@ public partial class Character : RigidBody3D
 			}
 		}
 		
+		//when reloading, gun spins to indicate out of ammo
 		if (isSpinningGun && gunHolder != null)
 		{
 			float spinStep = gunSpinSpeed * (float)delta;
@@ -277,6 +264,7 @@ public partial class Character : RigidBody3D
 			}
 		}
 		
+		//change gravity depending on speed
 		if (LinearVelocity.Y > 0)
 		{
 			GravityScale = 1.5f;
@@ -297,7 +285,8 @@ public partial class Character : RigidBody3D
 		}
 
 		Vector3 targetPos;
-
+		
+		//if zoomed in, changes the camera position
 		if (isZoomed)
 		{
 			targetPos = aimCamPos;
@@ -308,7 +297,8 @@ public partial class Character : RigidBody3D
 		}
 		
 		float currentZoomSpeed;
-
+		
+		//if zoomed in, changes the mouse speed
 		if (isZoomed)
 		{
 			currentZoomSpeed = zoomSpeed * 0.4f;
@@ -320,7 +310,8 @@ public partial class Character : RigidBody3D
 
 		Camera.Position = Camera.Position.Lerp(targetPos, currentZoomSpeed * (float)delta);
 		float targetFov;
-
+		
+		//if zoomed in, changes how far you can see
 		if (isZoomed)
 		{
 			targetFov = zoomFov;
@@ -341,7 +332,8 @@ public partial class Character : RigidBody3D
 		rotation.Y = rotating;
 		Rotation = rotation;
 		Vector3 velocity = Vector3.Zero;
-
+		
+		//input to move left, right, back or forward
 		if (Input.IsActionPressed("MoveRight"))
 		{
 			velocity.X += 1;
@@ -365,7 +357,8 @@ public partial class Character : RigidBody3D
 		Vector3 right = basis.X;
 		Vector3 moveDirection = (right * velocity.X + forward * velocity.Z).Normalized();
 		float currentSpeed;
-
+		
+		//changes speed of character if crouching
 		if (isCrouching)
 		{
 			currentSpeed = Speed * crouchSpeed;
@@ -377,6 +370,7 @@ public partial class Character : RigidBody3D
 		
 		Vector3 finalVelocity = new Vector3(moveDirection.X * currentSpeed, LinearVelocity.Y, moveDirection.Z * currentSpeed);
 		
+		// checks if action is jump and raycast is on the floor, if so makes character jumo
 		if (Input.IsActionJustPressed("Jump") && GroundCheck.IsColliding())
 		{
 			finalVelocity.Y = Jump;
@@ -385,7 +379,8 @@ public partial class Character : RigidBody3D
 		if (Cam != null)
 		{
 			Vector3 targetCamPos;
-
+			
+			//changes the camera position depending on crouching
 			if (isCrouching)
 			{
 				targetCamPos = new Vector3(0, 0.5f, 0);
@@ -394,14 +389,15 @@ public partial class Character : RigidBody3D
 			{
 				targetCamPos = new Vector3(0, 1f, 0);
 			}
-			
+			//changes the new position
 			Cam.Position = Cam.Position.Lerp(targetCamPos, 10 * state.Step);
 		}
 		
 		Vector3 offset;
 		Vector3 lefttargetRotation;
 		Vector3 righttargetRotation;
-
+		
+		//changes the position of the legs if crouching
 		if (isCrouching)
 		{
 			offset = crouchOffset;
@@ -415,14 +411,14 @@ public partial class Character : RigidBody3D
 			righttargetRotation = Vector3.Zero;
 		}
 
-
+		//changes position of arm 
 		if (ArmPivot != null)
 		{
 			Vector3 targetArmRotation = new Vector3(pitch, 0, 0);
 			ArmPivot.Rotation = ArmPivot.Rotation.Lerp(targetArmRotation, 10f * (float)state.Step);
 			ArmPivot.Position = ArmPivot.Position.Lerp(ArmPivotStart + offset, 10f * (float)state.Step);
 		}
-
+		//tells the position of every head, torso, arm or legs
 		if (HeadMesh != null)
 		{
 			HeadMesh.Position = HeadMesh.Position.Lerp(HeadStartPosition + offset, 10f * (float)state.Step);
@@ -474,7 +470,8 @@ public partial class Character : RigidBody3D
 		
 		LinearVelocity = finalVelocity;
 	}
-		
+	
+	//changes how far each gun can zoom in
 	private void SetZoomValuesByGun(string gun)
 	{
 		switch (gun)
@@ -500,6 +497,7 @@ public partial class Character : RigidBody3D
 		}
 	}
 	
+	//reduces bullet and fires it in a straight line
 	private void Shoot()
 	{
 		if (ShootCooldown <= 0 && ammo > 0)
@@ -525,7 +523,8 @@ public partial class Character : RigidBody3D
 			bulletInstance.SetGunType(selectedGun);
 			bulletInstance.Direction = (targetPos - bulletHole.GlobalPosition).Normalized();
 			bulletInstance.TeamShooter = this; 
-
+			
+			//changes the attributes of different gun types for its shoot cooldown
 			switch(selectedGun)
 			{
 				case "Pistol":
@@ -545,6 +544,8 @@ public partial class Character : RigidBody3D
 					break;
 			}
 		}
+		
+		//if shootcooldown is zero, reload
 		else if (ShootCooldown <= 0)
 		{
 			Reload();
@@ -559,6 +560,7 @@ public partial class Character : RigidBody3D
 		isSpinningGun = true;
 		gunSpinAngle = 0f;
 		
+		//changes how long the gun is on a cooldown when reloading
 		switch (selectedGun)
 		{
 			case "Pistol":
@@ -577,11 +579,12 @@ public partial class Character : RigidBody3D
 				ShootCooldown=2;
 				break;	
 		}
-		
+		//how much the gun spins in that time
 		totalSpinAmount = 360f;
 		gunSpinSpeed = totalSpinAmount / (float)ShootCooldown;
 	}
 	
+	//if bullet hits player, takes damage depending on gun types
 	public void TakeDamage(float amount)
 	{
 		CurrentHealth = Mathf.Max(CurrentHealth - (int)amount, 0);
@@ -593,7 +596,8 @@ public partial class Character : RigidBody3D
 			KillManager.Instance.AddEnemyKill();
 		}
 	}
-
+	
+	//when health is 0, they are sent to respawn screen to select another gun if they want
 	private void Die()
 	{
 		Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -606,7 +610,8 @@ public partial class Character : RigidBody3D
 		Map.Instance.ShowCaptureManagerUI(false);
 		CallDeferred(nameof(DeferredDie));
 	}
-
+	
+	//changes them to the respawn screen
 	private void DeferredDie()
 	{
 		QueueFree();

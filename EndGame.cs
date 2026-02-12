@@ -26,6 +26,7 @@ public partial class EndGame : Control
 		DisplayResults();
 	}
 	
+	//goes back to menu when pressed
 	private void exitButton()
 	{
 		int finalScore = MatchStats.Instance.CalculateFinalScore();
@@ -33,6 +34,7 @@ public partial class EndGame : Control
 		GetTree().ChangeSceneToFile("res://Menu.tscn");
 	}
 	
+	//displays the results of the game
 	private void DisplayResults()
 	{
 		if (MatchStats.Instance.TeamWon)

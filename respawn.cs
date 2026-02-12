@@ -17,28 +17,33 @@ public partial class respawn : Control
 		heavy = GetNode<Button>("MarginContainer/CharacterSelection/VBoxContainer2/heavy");
 		sniper = GetNode<Button>("MarginContainer/CharacterSelection/VBoxContainer2/sniper");
 	}
-	
+	//respawn back with pistol
 	private void PistolRespawn()
 	{
 		SelectGun("Pistol");
 	}
+	//respawn back with rifle1
 	private void Rifle1Respawn()
 	{
 		SelectGun("Rifle1");
 	}
+	//respawn back with rifle2
 	private void Rifle2Respawn()
 	{
 		SelectGun("Rifle2");
 	}
+	//respawn back with heavy
 	private void HeavyRespawn()
 	{
 		SelectGun("Heavy");
 	}
+	//respawn back with sniper
 	private void SniperRespawn()
 	{
 		SelectGun("Sniper");
 	}
 	
+	//checks which gun has been selected
 	private void SelectGun(string gunName)
 	{
 		Input.MouseMode = Input.MouseModeEnum.Captured;

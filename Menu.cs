@@ -15,9 +15,10 @@ public partial class Menu : Control
 		optionButton = GetNode<Button>("MarginContainer/HBoxContainer/VBoxContainer/Option");
 		LogInOrSignUp = GetNode<Button>("MarginContainer/LogInOrSignUp");
 	}
-
+	
 	private void startPressed()
 	{
+		//resets all the match stats managers
 		KillManager.Instance?.UnregisterUI();
 		CaptureManager.Instance?.Reset();
 		MatchStats.Instance?.Reset();
@@ -27,6 +28,7 @@ public partial class Menu : Control
 		this.QueueFree();
 	}
 	
+	//goes to the option screen to show leaderboard
 	private void OptionPressed()
 	{
 		PackedScene optionScene = GD.Load<PackedScene>("res://option.tscn");
@@ -34,12 +36,14 @@ public partial class Menu : Control
 		GetTree().Root.AddChild(optionInstance);
 		this.QueueFree();
 	}
-
+	
+	//game is closed
 	private void QuitPressed()
 	{
 		GetTree().Quit();
 	}
 	
+	//goes to the log in screen
 	private void LogInOrSignUpPressed()
 	{
 		PackedScene LogInOrSignUpScene = GD.Load<PackedScene>("res://LogInOrSignUpSystem.tscn");

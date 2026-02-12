@@ -20,7 +20,7 @@ public partial class AccountManager : Node
 		AutoLogin();
 	}
 
-	void Load()
+	void Load() //loads all account stored
 	{
 		if (!File.Exists(SavePath))
 		{
@@ -32,22 +32,24 @@ public partial class AccountManager : Node
 		Database = JsonConvert.DeserializeObject<AccountDatabase>(json);
 	}
 
-	void Save()
+	void Save() //when account made, it serialize the data
 	{
 		string json = JsonConvert.SerializeObject(Database, Formatting.Indented);
 		File.WriteAllText(SavePath, json);
 	}
 
-	string Hash(string input)
+	string Hash(string input) //turns any text into a unique fixed-length code
 	{
 		using var sha = SHA256.Create();
 		byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
 		return Convert.ToHexString(bytes);
 	}
 
+	//ensure email and password is valid
 	bool ValidEmail(string email) => email.Contains("@") && email.Contains(".");
 	bool ValidPassword(string password) => password.Length >= 6 && password.Length <= 20;
 
+	//create a new account which each data type being valid
 	public string SignUp(string email, string password, string nickname)
 	{
 		if (!ValidEmail(email)) 
@@ -69,6 +71,7 @@ public partial class AccountManager : Node
 		return "OK";
 	}
 
+	//lets user to access their account by entering their right information
 	public string Login(string email, string password)
 	{
 		var user = Database.Users.FirstOrDefault(u => u.Email == email);
@@ -88,6 +91,7 @@ public partial class AccountManager : Node
 		return "OK";
 	}
 
+	//auto logs the player whichever account was used last
 	void AutoLogin()
 	{
 		if (string.IsNullOrEmpty(Database.LastLoggedInEmail)) 
@@ -97,7 +101,8 @@ public partial class AccountManager : Node
 
 		CurrentUser = Database.Users.FirstOrDefault(u => u.Email == Database.LastLoggedInEmail);
 	}
- 
+ 	
+	//reset password if they want to change it
 	public bool ResetPassword(string email, string newPassword)
 	{
 		if (!ValidPassword(newPassword)) 
@@ -117,6 +122,7 @@ public partial class AccountManager : Node
 		return true;
 	}
  
+	//permanetly deletes users data
 	public bool DeleteUser(string password)
 	{
 		if (CurrentUser == null) 
@@ -135,6 +141,7 @@ public partial class AccountManager : Node
 		return true;
 	}
  
+	//only updates when score is higher than previous one
 	public void TryUpdateScore(int newScore)
 	{
 		if (CurrentUser == null) 
@@ -147,7 +154,8 @@ public partial class AccountManager : Node
 			Save();
 		}
 	}
- 
+ 	
+	//retrieves leaderboard to store each score in order
 	public UserData[] GetLeaderboard()
 	{
 		return Database.Users.OrderByDescending(u => u.BestScore).ToArray();

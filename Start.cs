@@ -20,6 +20,7 @@ public partial class Start : Control
 		Sniper = GetNode<Button>("MarginContainer/CharacterSelection/VBoxContainer2/Sniper");
 	}
 	
+	//goes back to menu scene
 	private void BackPressed()
 	{
 		PackedScene backScene = GD.Load<PackedScene>("res://menu.tscn");
@@ -27,28 +28,33 @@ public partial class Start : Control
 		GetTree().Root.AddChild(backInstance);
 		this.QueueFree();
 	}
-	
+	//spawn with pistol
 	private void PistolPressed()
 	{
 		SelectGun("Pistol");
 	}
+	//spawn with rifle1
 	private void Rifle1Pressed()
 	{
 		SelectGun("Rifle1");
 	}
+	//spawn with rifle2
 	private void Rifle2Pressed()
 	{
 		SelectGun("Rifle2");
 	}
+	//spawn with heavy
 	private void HeavyPressed()
 	{
 		SelectGun("Heavy");
 	}
+	//spawn with sniper
 	private void SniperPressed()
 	{
 		SelectGun("Sniper");
 	}
 	
+	//checks which gun has been selected and spawn with that gun
 	private void SelectGun(string gunName)
 	{
 		var globalData = GetNode<GlobalData>("/root/GlobalData");

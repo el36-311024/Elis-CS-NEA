@@ -6,6 +6,7 @@ using System.Linq;
 
 public partial class team : RigidBody3D
 {
+	//enum for each team state during the game
 	private enum TeamState
 	{
 		GoingToCapturePoint,
@@ -93,7 +94,7 @@ public partial class team : RigidBody3D
 		currentState = TeamState.GoingToCapturePoint; 
 		TeamDetection.BodyEntered += OnTeamDetectionBodyEntered;
 	}
-
+	//changes the attributes of the gun 
 	private void SetGunStats(string gun)
 	{
 		switch (gun)
@@ -147,12 +148,12 @@ public partial class team : RigidBody3D
 		}
 		currentAmmo = ammoAmount;
 	}
-	
+	//if enemy is inside detection range, they are going to combat state
 	private bool IsCloseCombat()
 	{
 		return IsEnemyInDetectionRange();
 	}
-	
+	//checks whether enemy is inside the raycast of team sight
 	private void UpdateTeamSight()
 	{ 
 		if (sightTemporarilyDisabled)
@@ -169,14 +170,14 @@ public partial class team : RigidBody3D
 		
 		TeamSight.Enabled = !IsCloseCombat();
 	}
-	
+	//disable raycast temporarily
 	private void DisableSightTemporarily()
 	{
 		sightTemporarilyDisabled = true;
 		sightDisableTimer = SightDisableDuration;
 		TeamSight.Enabled = false;
 	}
-	
+	//when spawned, the detection range is changed depending on gun type
 	private void UpdateDetectionRange()
 	{
 		var shapeNode = TeamDetection.GetNode<CollisionShape3D>("CollisionShape3D");
@@ -188,7 +189,7 @@ public partial class team : RigidBody3D
 			shapeNode.Shape = newSphere;
 		}
 	}
-	
+	//used to move team towards their target
 	private Vector3 GetCombatMoveDirection(Vector3 targetPosition, double delta)
 	{
 		Vector3 toTarget = (targetPosition - GlobalPosition).Normalized();
@@ -213,7 +214,7 @@ public partial class team : RigidBody3D
 		finalDirection.Y = 0;
 		return finalDirection.Normalized();
 	}
-	
+	//when enemy is too close, use this method to randomly move left/right and move out the way
 	private float GetStrafeSign(double delta)
 	{
 		CirclingSwitchTimer -= (float)delta;
@@ -233,7 +234,7 @@ public partial class team : RigidBody3D
 
 		return DirectionSign;
 	}
-	
+	//used to randomly select capture point and return it to team, which can then be stored to them
 	private void PickRandomCapturePoint()
 	{
 		var cps = GetTree().GetNodesInGroup("CapturePoint").OfType<Node3D>().ToList();
@@ -254,7 +255,7 @@ public partial class team : RigidBody3D
 		captureOffset = new Vector3(rng.RandfRange(-4f, 4f), 0, rng.RandfRange(-4f, 4f));
 		captureCompleted = false;
 	}
-	
+	//checks if capture is owned by team
 	private bool IsCaptureOwnedByTeam()
 	{
 		if (assignedCapturePoint is CapturePoint cp)
@@ -267,12 +268,13 @@ public partial class team : RigidBody3D
 	
 	public override void _PhysicsProcess(double delta)
 	{
+		//change behaviour of team when health is low
 		if (CurrentHealth < 26)
 		{
 			ForceLowHealthBehavior(delta);
 			return;
 		}
-
+		//if disabled, this is countdown to when it can be re enabled 
 		if (sightTemporarilyDisabled)
 		{
 			sightDisableTimer -= (float)delta;
@@ -281,19 +283,19 @@ public partial class team : RigidBody3D
 				sightTemporarilyDisabled = false;
 			}
 		}
-
+		//handles the behaviour of team
 		HandleRotation(delta);   
 		HandleMovement(delta);   
 		UpdateTeamSight();
 		Shooting();
-
+		//changes state when inside capture point
 		if (currentState == TeamState.GuardingCapturePoint && IsEnemyInDetectionRange())
 		{
 			UpdateTarget();
 			ChangeState(TeamState.InCombat);
 		}
 	}
-	
+	//force them to behave different when health is low
 	private void ForceLowHealthBehavior(double delta)
 	{ 
 		if (currentState != TeamState.GoingToCapturePoint)
@@ -306,9 +308,9 @@ public partial class team : RigidBody3D
 		UpdateTeamSight();
 		Shooting();
 	}
-	
+	//handles how they look during the game
 	private void HandleRotation(double delta)
-	{  
+	{  //low health
 		if (CurrentHealth<26)
 		{
 			if (IsEnemyInDetectionRange())
@@ -322,7 +324,7 @@ public partial class team : RigidBody3D
 			}
 			return;
 		}
- 
+ 		//if bullet enters detection range, they look at enemy who shot it
 		if (reactingToBullet)
 		{
 			if (CanSeeEnemy(out Node3D seenTarget))
@@ -353,7 +355,7 @@ public partial class team : RigidBody3D
 			}
 			return;
 		}
- 
+ 		//if raycast hits enemy, they look in their direction
 		if (CanSeeEnemy(out Node3D seen))
 		{
 			if (currentTarget == null)
@@ -364,7 +366,7 @@ public partial class team : RigidBody3D
 			LookAtTargetOrDirection(delta);
 			return;
 		}
- 
+ 		//behaviour for different health
 		if (CurrentHealth>25 && CurrentHealth<=50)
 		{
 			if (IsEnemyInDetectionRange())
@@ -387,7 +389,7 @@ public partial class team : RigidBody3D
 
 		LookMovement(delta);
 	}
-	
+	//handles where they move depending on current state
 	private void HandleMovement(double delta)
 	{  
 		switch (currentState)
@@ -409,7 +411,7 @@ public partial class team : RigidBody3D
 				break;
 		}
 	}
-	
+	//changes state depending on what has happened inside the game
 	private void ChangeState(TeamState newState)
 	{
 		if (currentState == newState) 
@@ -446,7 +448,7 @@ public partial class team : RigidBody3D
 
 		currentState = newState;
 	}
-	
+	//used to move team
 	private void MoveUsingNavigation(Vector3 target, double delta)
 	{  
 		if (bulletDodgeTimer > 0f && IsChasingViaSight())
@@ -467,13 +469,13 @@ public partial class team : RigidBody3D
 		Vector3 next = MovementTeam.GetNextPathPosition();
 		Vector3 direction = (next - GlobalPosition);
 		direction.Y = 0;
-
+		//apply to the direction where they are going
 		if (direction.LengthSquared() > 0.0001f)
 		{
 			ApplyMovement(direction.Normalized(), moveSpeed);
 		}
 	}
-	
+	//adds velocity to the direction
 	private void ApplyMovement(Vector3 desiredDirection, float speed)
 	{
 		Vector3 velocity = LinearVelocity;
@@ -482,7 +484,7 @@ public partial class team : RigidBody3D
 		velocity.Z = desiredVelocity.Z; 
 		LinearVelocity = velocity;
 	}
-	
+	//move in a random direction for a short time, then switch directions smoothly
 	private Vector3 GetSmoothCombatDirection(double delta)
 	{
 		combatMoveTimer -= (float)delta;
@@ -496,11 +498,11 @@ public partial class team : RigidBody3D
 
 		return combatMoveDirection;
 	}
-	
+	//they are fighting
 	private void State_InCombat(double delta)
 	{
 		UpdateTarget(); 
-
+		//checks which state they are meant to be in
 		if (currentTarget == null || !IsInstanceValid(currentTarget))
 		{
 			if (CurrentHealth > 50)
@@ -513,7 +515,7 @@ public partial class team : RigidBody3D
 			}
 			return;
 		}
-
+		//checks how far they are away from enemy
 		float distance = GlobalPosition.DistanceTo(currentTarget.GlobalPosition);
 
 		if (distance > detectionRange)
@@ -531,7 +533,7 @@ public partial class team : RigidBody3D
   
 		Vector3 combatDirection = GetCombatMoveDirection(currentTarget.GlobalPosition, delta);
 		float speedMultiplier = 1f;
-		
+		//changes speed of movement depending on gun
 		if (gunName == "Sniper")
 		{
 			speedMultiplier = 0.75f;
@@ -544,7 +546,7 @@ public partial class team : RigidBody3D
 		float idealMin = minDistance;
 		float idealMax = minDistance + DistanceAway;
 		Vector3 finalMoveDirection = combatDirection;
- 
+ 		//make them go to the ideal minimum distance
 		if (distance < idealMin)
 		{
 			Vector3 toTarget = (currentTarget.GlobalPosition - GlobalPosition).Normalized();
@@ -554,6 +556,7 @@ public partial class team : RigidBody3D
 			finalMoveDirection = (away * CirclingBackwards) + (strafe * Circling);
 			finalMoveDirection = finalMoveDirection.Normalized();
 		}
+		//make sure they are not too far away
 		else if (distance > idealMax)
 		{
 			Vector3 desiredPosition = currentTarget.GlobalPosition + (GlobalPosition - currentTarget.GlobalPosition).Normalized() * minDistance;
@@ -573,7 +576,7 @@ public partial class team : RigidBody3D
 		}
 
 		float finalSpeed = moveSpeed;
- 
+		//if enemy not within detection range, go towards them
 		if (!IsEnemyInDetectionRange())
 		{ 
 			finalSpeed = moveSpeed;
@@ -596,14 +599,14 @@ public partial class team : RigidBody3D
 		ApplyMovement(finalMoveDirection.Normalized(), finalSpeed);
 	}
 
-	
+	//when assigned to capture point, they move towards it
 	private void State_GoingToCapturePoint(double delta)
 	{
 		if (assignedCapturePoint == null)
 		{
 			return;
 		}
- 
+ 		//if raycast hits enemy, change state to combat
 		if (ShootDecider(out Node3D target))
 		{
 			currentTarget = target;
@@ -626,7 +629,7 @@ public partial class team : RigidBody3D
 			Shooting();
 			return;
 		}
- 
+ 		//used to move towards capture point
 		Vector3 targetPosition = assignedCapturePoint.GlobalPosition + captureOffset;
 		MoveUsingNavigation(targetPosition, delta);
 
@@ -635,21 +638,22 @@ public partial class team : RigidBody3D
 			ChangeState(TeamState.GuardingCapturePoint);
 		}
 	}
-	
+	//when enemy has left detection range, what state they are meant to be in
 	private void State_HuntingEnemy(double delta)
 	{ 
+		//goes back to capture point
 		if (currentTarget == null || !IsInstanceValid(currentTarget))
 		{
 			ChangeState(TeamState.GoingToCapturePoint);
 			return;
 		}
- 
+ 		//if enemy re enters detection range, back to combat state
 		if (IsEnemyInDetectionRange())
 		{
 			ChangeState(TeamState.InCombat);
 			return;
 		}
- 
+ 		//hunt enemy if within certain health
 		MoveUsingNavigation(currentTarget.GlobalPosition, delta);
 		huntTimer -= (float)delta;
 		
@@ -660,15 +664,16 @@ public partial class team : RigidBody3D
 			ChangeState(TeamState.GoingToCapturePoint);
 		}
 	}
-	
+	//when team is insde capture point, what they do inside
 	private void State_GuardingCapturePoint(double delta)
 	{ 
+		//change state to combat if enemy is nearby
 		if (IsEnemyInDetectionRange())
 		{
 			ChangeState(TeamState.InCombat);
 			return;
 		}
- 
+ 		//if raycast hits enemy, shoot, but dont move
 		if (ShootDecider(out Node3D target))
 		{
 			currentTarget = target;
@@ -681,7 +686,7 @@ public partial class team : RigidBody3D
 			UpdateTarget();
 			Shooting();
 		}
- 
+ 		//get a new point inside capture point to randomly move towards
 		guardRepathTimer -= (float)delta;
 
 		bool needNewPoint = guardTarget == Vector3.Zero || guardRepathTimer <= 0f || GlobalPosition.DistanceTo(guardTarget) < 1f;
@@ -698,7 +703,7 @@ public partial class team : RigidBody3D
 		{
 			return;
 		}
-
+		//randomly decide if they should stay or leave
 		if (!decidedToStay && !decidedToLeave)
 		{
 			if (rng.Randf() < 0.5f)
@@ -713,7 +718,7 @@ public partial class team : RigidBody3D
 				return;
 			}
 		}
-
+		//must wait 15seconds before leaving
 		if (decidedToStay)
 		{
 			guardStayTimer += (float)delta;
@@ -725,14 +730,14 @@ public partial class team : RigidBody3D
 			}
 		}
 	} 
-	
+	//forced to leave capture point
 	private void ForceLeaveCapturePoint()
 	{
 		PickRandomCapturePoint();
 		captureCompleted = false;
 		ChangeState(TeamState.GoingToCapturePoint);
 	}
-	
+	//checks whether capture point is owned by them
 	private bool IsAssignedCaptureAlreadyOwned()
 	{
 		if (assignedCapturePoint is CapturePoint cp)
@@ -742,9 +747,10 @@ public partial class team : RigidBody3D
 
 		return false;
 	}
-
+	//what to do when enemy is inside detection range
 	private bool IsEnemyInDetectionRange()
 	{
+		//checks all the enemy inside in order
 		foreach (var body in TeamDetection.GetOverlappingBodies())
 		{
 			if (body is Node node && node.IsInGroup("Enemy"))
@@ -757,11 +763,12 @@ public partial class team : RigidBody3D
 	
 	private void OnTeamDetectionBodyEntered(Node body)
 	{
+		//dont react to bullet if another bullet is inside
 		if (reactingToBullet)
 		{
 			return;
 		}
- 
+ 		//makes team look at the shooter
 		if (body is BulletEnemy bullet)
 		{
 			if (bullet.EnemyShooter is Node3D shooter && IsInstanceValid(shooter))
@@ -773,12 +780,12 @@ public partial class team : RigidBody3D
 			}
 		}
 	}
-	
+	//if raycast hits enemy, they temporarily move towards enemy
 	private bool IsChasingViaSight()
 	{
 		return currentTarget != null && IsInstanceValid(currentTarget) && !IsEnemyInDetectionRange()	&& CanSeeEnemy(out _);
 	}
-	 
+	 //checks if they are inside capture point
 	private bool IsInsideCapturePoint()
 	{
 		if (assignedCapturePoint == null)
@@ -791,11 +798,11 @@ public partial class team : RigidBody3D
 		{
 			return false;
 		}
-
+		//checks if they are inside
 		return area.GetOverlappingBodies().Contains(this);
 	}
 
-	
+	//look in the direction they are moving at
 	private void LookMovement(double delta) 
 	{ 
 		Vector3 lookDirection = Vector3.Zero; 
@@ -830,7 +837,7 @@ public partial class team : RigidBody3D
 		angle = Mathf.Clamp(angle, -rotateStep, rotateStep); 
 		RotateY(angle); 
 	}
-	
+	//randomly assings a capture point to team
 	private Vector3 PickRandomPointInCapturePoint()
 	{
 		if (assignedCapturePoint == null)
@@ -844,7 +851,7 @@ public partial class team : RigidBody3D
 		Vector3 point = center + Direction * distance;
 		return point;
 	}
-	
+	//updates target to the first enemy that interacts with them
 	private void UpdateTarget()
 	{
 		if (currentTarget != null && IsInstanceValid(currentTarget) && IsEnemyInDetectionRange())
@@ -855,7 +862,7 @@ public partial class team : RigidBody3D
 		var bodies = TeamDetection.GetOverlappingBodies();
 		Node3D nearest = null;
 		float nearestDist = float.MaxValue;
-
+		//checks all enemy inside
 		foreach (var body in bodies)
 		{
 			if (body is Node3D node && node.IsInGroup("Enemy"))
@@ -874,7 +881,7 @@ public partial class team : RigidBody3D
 			currentTarget = nearest;
 		}
 	}
-	
+	//looks at enemy
 	private void LookAtTargetOrDirection(double delta) 
 	{ 
 		if (currentTarget == null || !IsInstanceValid(currentTarget)) 
@@ -913,7 +920,7 @@ public partial class team : RigidBody3D
 		Vector3 armRot = armPivot.Rotation; armRot.X = Mathf.Lerp(armRot.X, pitch, 6f * (float)delta); 
 		armPivot.Rotation = armRot;  
 	}
-	
+	//tells team where to aim
 	private Vector3 GetTargetCenter(Node3D target)
 	{
 		Marker3D aim = target.GetNodeOrNull<Marker3D>("AimMarker");
@@ -925,7 +932,7 @@ public partial class team : RigidBody3D
 
 		return target.GlobalPosition;
 	} 
-	
+	//checks whether enemy is inside raycast
 	private bool CanSeeEnemy(out Node3D seenTarget)
 	{
 		seenTarget = null;
@@ -943,7 +950,7 @@ public partial class team : RigidBody3D
 
 		return false;
 	}
-	
+	//if enemy is inside raycast, shoot
 	private bool ShootDecider(out Node3D target)
 	{
 		target = null;
@@ -965,7 +972,7 @@ public partial class team : RigidBody3D
 
 		return false;
 	}
-		
+	//shooting logic, see if they can shoot or reload
 	private async void Shooting()
 	{
 		if (isReloading || isShooting)
@@ -992,7 +999,7 @@ public partial class team : RigidBody3D
 		currentTarget = target;
 		await FireLogic();
 	}
-	
+	//if ammo is sufficent, shoot. if not, reload
 	private async Task FireLogic()
 	{
 		if (currentAmmo > 0)
@@ -1006,7 +1013,7 @@ public partial class team : RigidBody3D
 			await Reload();
 		}
 	}
-
+	//fires bullet in a straight line
 	private async Task Shoot()
 	{
 		currentAmmo--;
@@ -1021,7 +1028,7 @@ public partial class team : RigidBody3D
 		GetTree().CurrentScene.AddChild(bulletTeamInstance);
 		await ToSignal(GetTree().CreateTimer(fireRate), "timeout");
 	}
-
+	//tells team they are reloading
 	private async Task Reload()
 	{
 		isReloading = true;
@@ -1029,7 +1036,7 @@ public partial class team : RigidBody3D
 		currentAmmo = ammoAmount;
 		isReloading = false;
 	}
-
+	//rotates their gun when reloading
 	private async Task RotateGunWhileReloading(float duration)
 	{
 		float elapsed = 0f;
@@ -1038,7 +1045,7 @@ public partial class team : RigidBody3D
 		{
 			return;
 		}
-
+		//speed in which they rotate
 		float totalRotation = Mathf.Tau;
 		float rotationSpeed = totalRotation / duration;
 
@@ -1068,7 +1075,7 @@ public partial class team : RigidBody3D
 			gunPivot.Rotation = Vector3.Zero;
 		}
 	}
-
+	//where they spawn on map
 	public void Initialize(Marker3D marker, string gun)
 	{
 		spawnMarker = marker;
@@ -1077,14 +1084,14 @@ public partial class team : RigidBody3D
 		CallDeferred(nameof(UpdateDetectionRange));
 		EquipGun(gunName);
 	}
-	
+	//which gun is equipped to team
 	private void EquipGun(string gun)
 	{
 		string gunPath = $"res://{gun}.tscn";
 		PackedScene gunScene = GD.Load<PackedScene>(gunPath);
 		Node3D gunHolder;
 		gunHolder = GetNode<Node3D>("ArmPivot/ArmMovement/GunPivot/GunHolder");
-
+		//removes unnecessary gun
 		foreach (Node child in gunHolder.GetChildren())
 		{
 			gunHolder.RemoveChild(child);
@@ -1094,7 +1101,7 @@ public partial class team : RigidBody3D
 		Node3D gunInstance = gunScene.Instantiate<Node3D>();
 		gunHolder.AddChild(gunInstance);
 	}
-
+	//if hit by bullet, remove hp accordingly
 	public void TakeDamage(int amount)
 	{
 		if (isDead)
@@ -1110,7 +1117,7 @@ public partial class team : RigidBody3D
 			Die();
 		}
 	}
-
+	//when hp is 0
 	private async void Die()
 	{
 		SetProcess(false);
@@ -1129,12 +1136,12 @@ public partial class team : RigidBody3D
 		TeamDied?.Invoke(spawnMarker, gunName);
 		CallDeferred(nameof(DeferredDie));
 	}
-	
+	//remove them from scene
 	private void DeferredDie()
 	{
 		QueueFree();
 	}
-	
+	//drop their gun when they die
 	private void DropGun()
 	{
 		if (!IsInsideTree())
@@ -1151,7 +1158,7 @@ public partial class team : RigidBody3D
 		{
 			return;
 		}
-
+		//removes them from the parent (team)
 		Node3D gunVisual = gunHolder.GetChild<Node3D>(0);
 		gunHolder.RemoveChild(gunVisual);
 		RigidBody3D rb = new RigidBody3D{Name = "DroppedGun", GravityScale = 1f, Freeze = false, Sleeping = false};
@@ -1165,7 +1172,7 @@ public partial class team : RigidBody3D
 		rb.ApplyImpulse(throwDirection * 3.5f);
 		StartGunDespawn(rb);
 	}
-	
+	//how long gun will stay until it is removed
 	private async void DespawnGun(RigidBody3D rb)
 	{
 		await ToSignal(GetTree().CreateTimer(5f), "timeout");
@@ -1175,7 +1182,7 @@ public partial class team : RigidBody3D
 			rb.QueueFree();
 		}
 	}
-	
+	//timer of how long they stay
 	private void StartGunDespawn(RigidBody3D rb)
 	{
 		Timer t = new Timer();
